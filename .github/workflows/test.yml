@@ -1,0 +1,8 @@
+name: 🧪 Test Website
+on: workflow_call
+jobs:
+  website_test_job:
+    runs-on: self-hosted
+    steps:
+    - name: website testing
+      run: ANSIBLE_HOST_KEY_CHECKING=False export ANSIBLE_ROLES_PATH=/home/ubuntu/runner/_work/ansible-githubCI/ansible-githubCI/roles && ansible-playbook -u ubuntu -i /home/ubuntu/runner/_work/ansible-githubCI/ansible-githubCI/host_inventory /home/ubuntu/runner/_work/ansible-githubCI/ansible-githubCI/playbooks/website-test.yml

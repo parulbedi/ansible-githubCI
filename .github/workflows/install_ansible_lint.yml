@@ -1,0 +1,12 @@
+name: 🧾 installing lint
+on: workflow_call
+jobs:
+  install_lint_job:
+    runs-on: self-hosted
+    steps:
+    - name: installing ansible via github actions
+      run: |
+        hostname
+        sudo apt-get update -y
+        sudo apt-get install -y ansible-lint
+        ansible-lint --version

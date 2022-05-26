@@ -1,0 +1,12 @@
+name: 📦 installing ansible
+on: workflow_call
+jobs:
+  install_ansible_job:
+    runs-on: self-hosted
+    steps:
+    - name: installing ansible via github actions
+      run: |
+        hostname
+        sudo apt install software-properties-common
+        sudo add-apt-repository --yes --update ppa:ansible/ansible
+        sudo apt install ansible -y

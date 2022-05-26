@@ -1,0 +1,64 @@
+name: 💡 Running Pipeline
+on:
+  push:
+    branches: [master, main]
+jobs:
+  repo_updated:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@master
+        
+  install_ansible:
+    needs: repo_updated
+    runs-on: self-hosted
+    steps:
+    - name: installing ansible via github actions
+      run: |
+        hostname
+        sudo apt install software-properties-common
+        sudo add-apt-repository --yes --update ppa:ansible/ansible
+        sudo apt install ansible -y
+    
+  install_ansible_lint:
+    needs: repo_updated
+    runs-on: self-hosted
+    steps:
+    - name: installing ansible via github actions
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y ansible-lint
+        ansible-lint --version
+  
+  run_ansible_lint:
+    needs: [install_ansible, install_ansible_lint]
+    runs-on: ubuntu-latest
+    steps:
+    - name: running ansible lint
+      run: ansible-lint
+    
+  install_apache:
+    needs: run_ansible_lint
+    runs-on: self-hosted
+    steps:
+    - name: installing apache
+      run: |
+        ANSIBLE_HOST_KEY_CHECKING=False 
+        ansible-playbook -u ubuntu -i ${GITHUB_WORKSPACE}/host_inventory ${GITHUB_WORKSPACE}/playbooks/apache-install.yml 
+
+  website-update:
+    needs: install_apache
+    runs-on: self-hosted
+    steps:
+    - name: website updating
+      run: |
+        ANSIBLE_HOST_KEY_CHECKING=False export ANSIBLE_ROLES_PATH=${GITHUB_WORKSPACE}/roles
+        ansible-playbook -u ubuntu -i ${GITHUB_WORKSPACE}/host_inventory ${GITHUB_WORKSPACE}/playbooks/website-update.yml
+    
+  website-test:
+    needs: website-update
+    runs-on: self-hosted
+    steps:
+    - name: website testing
+      run: |
+        ANSIBLE_HOST_KEY_CHECKING=False export ANSIBLE_ROLES_PATH=${GITHUB_WORKSPACE}/roles
+        ansible-playbook -u ubuntu -i ${GITHUB_WORKSPACE}/host_inventory ${GITHUB_WORKSPACE}/playbooks/website-test.yml

@@ -1,0 +1,11 @@
+name: 🔨 Running lint
+on: workflow_call
+jobs:
+  run_lint_job:
+    runs-on: self-hosted
+    steps:
+    - name: running ansible lint
+      run: |
+        pwd
+        ls -al
+        ansible-lint
