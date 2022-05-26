@@ -1,6 +1,6 @@
 webservers:
   hosts:
     server1:
-      ansible_host: 20.97.255.182
+      ansible_host: 52.242.121.1
   vars:
-    ansible_ssh_private_key_file: /home/ubuntu/.ssh/my_own_key.pem
+    ansible_ssh_private_key_file: /home/ubuntu/.ssh/ubuntu-key.pem
