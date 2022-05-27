@@ -29,7 +29,7 @@ jobs:
   
   run_ansible_lint:
     needs: [install_ansible, install_ansible_lint]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
     - name: running ansible lint
       run: ansible-lint
