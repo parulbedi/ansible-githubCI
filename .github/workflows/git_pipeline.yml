@@ -1,7 +1,5 @@
 name: My Workflow
-on:
-  push:
-    branches: [master, main]
+on: push
 jobs:
   repo_updated:
     runs-on: self-hosted
@@ -37,7 +35,7 @@ jobs:
 #       run: ansible-lint
     
   install_apache:
-    needs: run_ansible_lint
+#     needs: run_ansible_lint
     runs-on: self-hosted
     steps:
     - name: installing apache
